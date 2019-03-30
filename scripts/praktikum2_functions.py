@@ -23,6 +23,49 @@ def closing():
 # YOUR FUNCTIONS HERE #
 #######################
 
+def forward(speed,duration):
+    for i in range(0,duration):
+        vel_msg.linear.x = speed
+        vel_msg.linear.y = 0
+        vel_msg.angular.z = 0
+        velocity_publisher.publish(vel_msg)
+        rospy.sleep(0.1)
+
+def turning(speed,duration):
+    for i in range(0,duration):
+        vel_msg.linear.x = 0
+        vel_msg.linear.y = 0
+        vel_msg.angular.z = speed
+        velocity_publisher.publish(vel_msg)
+        rospy.sleep(0.1)
+
+def side(speed,duration):
+    for i in range(0,duration):
+        vel_msg.linear.x = 0
+        vel_msg.linear.y = speed
+        vel_msg.angular.z = 0
+        velocity_publisher.publish(vel_msg)
+        rospy.sleep(0.1)
+
+def drive(x,y,z,duration):
+    for i in range(0,duration):
+        vel_msg.linear.x = x
+        vel_msg.linear.y = y
+        vel_msg.angular.z = z
+        velocity_publisher.publish(vel_msg)
+        rospy.sleep(0.1)
+
+def loop():
+    drive(0,0.8,1.6,20)
+
+def move_turning():
+    drive(0.5,0,0.8,20)
+
+def figure_eight():
+    drive(0.4,0,1,55)
+    drive(0.5,0,0,15)
+    drive(0.4,0,-1,55)
+    drive(0.5,0,0,15)
 
 ###########################
 # YOUR FUNCTIONS HERE END #
@@ -44,11 +87,7 @@ def move():
         ########################
         # YOUR CODE HERE START #
         ########################
-        vel_msg.linear.x = 0
-        vel_msg.linear.y = 0
-        vel_msg.angular.z = 0
-        velocity_publisher.publish(vel_msg)
-        rospy.sleep(0.1)
+        figure_eight()
         ######################
         # YOUR CODE HERE END #
         ######################
