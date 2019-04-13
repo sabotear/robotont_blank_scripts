@@ -13,30 +13,26 @@ MAX_X_SPEED = 0.5
 MAX_Y_SPEED = 0.5
 MAX_Z_SPEED = 2
 
-
-# IMPLEMENT THESE FUNCTIONS OR COPY FROM LAST TASK
-
-# TASK 1
-
-
 def keep_distance(x, y, z, roll, pitch, yaw, twist):
-
+    if x < 0.5:
+        twist.linear.x = -0.1
+    elif x > 0.5:
+        twist.linear.x = 0.1
     return twist
-
-# TASK 2
-
 
 def keep_center(x, y, z, roll, pitch, yaw, twist):
-
+    if y < 0:
+        twist.linear.y = -0.1
+    elif y > 0:
+        twist.linear.y = 0.1
     return twist
-
-# TASK 3
-
 
 def turn_towards_ar(x, y, z, roll, pitch, yaw, twist):
-
+    if yaw > -1.5:
+        twist.angular.z = 0.4
+    elif yaw < -1.5:
+        twist.angular.z = -0.4
     return twist
-
 
 def callback(data):
     global marker, last_heartbeat
@@ -94,6 +90,39 @@ def ar_demo():
         yaw = euler[2]
         rospy.loginfo("RPY: %s %s %s", roll, pitch, yaw)
         # YOUR CODE HERE
+        if marker.id == 8:
+            for x in range(50):
+                twist_msg.linear.x = 0
+                twist_msg.linear.y = 0
+                twist_msg.angular.z = -1
+                cmd_vel_pub.publish(twist_msg)
+                rospy.sleep(0.1)
+            for x in range(50):
+                twist_msg.linear.x = 0
+                twist_msg.linear.y = 0
+                twist_msg.angular.z = 1
+                cmd_vel_pub.publish(twist_msg)
+                rospy.sleep(0.1)
+
+        elif marker.id == 6:
+            for x in range(50):
+                twist_msg.linear.x = 0
+                twist_msg.linear.y = 0.2
+                twist_msg.angular.z = 0
+                cmd_vel_pub.publish(twist_msg)
+                rospy.sleep(0.1)
+
+            for x in range(50):
+                twist_msg.linear.x = 0
+                twist_msg.linear.y = -0.2
+                twist_msg.angular.z = 0
+                cmd_vel_pub.publish(twist_msg)
+                rospy.sleep(0.1)
+
+        else:
+            twist_msg.linear.x = 0
+            twist_msg.linear.y = 0
+            twist_msg.angular.z = 0
 
         # YOUR CODE HERE END
         # limiting
